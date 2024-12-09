@@ -1,13 +1,13 @@
 import useField from "../hooks/useField";
 import useSignup from "../hooks/useSignup";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import AuthContext from "../context/AuthContext";
 
 const Signup = () => {
   const navigate = useNavigate();
-  const { setUser } = useContext(AuthContext); // Access Auth  
-  const name = useField("text");  
+  const { setUser } = useContext(AuthContext); // Access Auth
+  const name = useField("text");
   const email = useField("email");
   const password = useField("password");
   const phoneNumber = useField("text");
@@ -16,6 +16,13 @@ const Signup = () => {
   const membershipStatus = useField("text");
 
   const { signup, error } = useSignup("/api/users/signup");
+
+  useEffect(() => {
+    if (error) {
+      console.log("Signup failed:", error);
+      error;
+    }
+  }, [error]);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
